@@ -169,7 +169,7 @@ function renderKanban(comments) {
                 <i data-lucide="x-circle" style="width:13px;height:13px;"></i> 반려
               </button>
               <div class="dropdown-divider"></div>
-              <button class="dropdown-item" data-cid="${c.id}" data-action="assign">
+              <button class="dropdown-item" data-cid="${c.id}" data-action="assign" data-assignee="${c.assignee_id || ''}">
                 <i data-lucide="user-check" style="width:13px;height:13px;"></i> 담당자 지정
               </button>
               <div class="dropdown-divider"></div>
@@ -220,7 +220,7 @@ function renderKanban(comments) {
             loadKanban();
           } catch (err) { showToast(err.message, 'error'); }
         } else if (action === 'assign') {
-          openAssignModal(cid);
+          openAssignModal(cid, item.dataset.assignee || '');
         } else if (action === 'delete') {
           if (!confirm('정말 삭제하시겠습니까?')) return;
           try {
@@ -236,9 +236,9 @@ function renderKanban(comments) {
   refreshIcons();
 }
 
-function openAssignModal(commentId) {
+function openAssignModal(commentId, currentAssigneeId = '') {
   const options = teamMembers.map(m =>
-    `<option value="${m.id}">${escHtml(m.name)}</option>`
+    `<option value="${m.id}" ${m.id === currentAssigneeId ? 'selected' : ''}>${escHtml(m.name)}</option>`
   ).join('');
 
   openModal({
@@ -247,7 +247,7 @@ function openAssignModal(commentId) {
       <div class="form-group">
         <label class="form-label">담당자</label>
         <select class="form-input" id="assignee-select">
-          <option value="">담당자 없음 (해제)</option>
+          <option value="" ${!currentAssigneeId ? 'selected' : ''}>담당자 없음 (해제)</option>
           ${options}
         </select>
       </div>
