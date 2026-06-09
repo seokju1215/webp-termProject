@@ -46,6 +46,29 @@ loadProject();
 loadFeedback();
 refreshIcons();
 
+// 3초마다 새 피드백 체크
+let knownIds = new Set();
+setInterval(async () => {
+  try {
+    const res = await apiGet(`/api/projects/${projectId}/comments?limit=50&sort=created_at&order=desc`);
+    const comments = res.data || res;
+    const newItems = comments.filter(c => !knownIds.has(c.id));
+    if (!newItems.length) return;
+    comments.forEach(c => knownIds.add(c.id));
+    document.getElementById('feedback-count').textContent = comments.length;
+    const list = document.getElementById('feedback-list');
+    document.getElementById('feedback-empty').classList.add('hidden');
+    newItems.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'feedback-item feedback-item-new';
+      div.innerHTML = buildFeedbackHtml(c);
+      list.prepend(div);
+      setTimeout(() => div.classList.remove('feedback-item-new'), 700);
+    });
+    refreshIcons();
+  } catch {}
+}, 3000);
+
 async function loadProject() {
   try {
     const res = await apiGet(`/api/teams/${teamId}/projects/${projectId}`);
@@ -106,11 +129,31 @@ async function loadFeedback() {
   try {
     const res = await apiGet(`/api/projects/${projectId}/comments?limit=50&sort=created_at&order=desc`);
     const comments = res.data || res;
+    comments.forEach(c => knownIds.add(c.id));
     document.getElementById('feedback-count').textContent = comments.length;
     renderFeedback(comments);
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+function buildFeedbackHtml(c) {
+  return `
+    ${c.selector ? `<div class="feedback-selector">${escHtml(c.selector)}</div>` : ''}
+    <div class="feedback-content">${escHtml(c.content)}</div>
+    <div class="feedback-meta">
+      <span class="badge ${statusBadge(c.status)}">${statusLabel(c.status)}</span>
+      <span style="font-size:0.75rem;color:var(--color-text-muted);">
+        ${c.created_by_name ? escHtml(c.created_by_name) : 'Agentation'}
+      </span>
+      ${c.page_url
+        ? `<a href="${escHtml(c.page_url)}" target="_blank" rel="noopener" style="margin-left:auto;">
+             <i data-lucide="external-link" style="width:11px;height:11px;"></i>
+           </a>`
+        : ''
+      }
+    </div>
+  `;
 }
 
 function renderFeedback(comments) {
@@ -124,25 +167,7 @@ function renderFeedback(comments) {
   }
 
   empty.classList.add('hidden');
-  list.innerHTML = comments.map(c => `
-    <div class="feedback-item">
-      ${c.selector ? `<div class="feedback-selector">${escHtml(c.selector)}</div>` : ''}
-      <div class="feedback-content">${escHtml(c.content)}</div>
-      <div class="feedback-meta">
-        <span class="badge ${statusBadge(c.status)}">${statusLabel(c.status)}</span>
-        <span style="font-size:0.75rem;color:var(--color-text-muted);">
-          ${c.created_by_name ? escHtml(c.created_by_name) : 'Agentation'}
-        </span>
-        ${c.page_url
-          ? `<a href="${escHtml(c.page_url)}" target="_blank" rel="noopener" style="margin-left:auto;">
-               <i data-lucide="external-link" style="width:11px;height:11px;"></i>
-             </a>`
-          : ''
-        }
-      </div>
-    </div>
-  `).join('');
-
+  list.innerHTML = comments.map(c => `<div class="feedback-item">${buildFeedbackHtml(c)}</div>`).join('');
   refreshIcons();
 }
 

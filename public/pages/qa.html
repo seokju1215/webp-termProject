@@ -170,6 +170,12 @@
     }
     .copy-btn:hover { background: var(--color-primary); color: #fff; }
 
+    @keyframes feedback-pop {
+      from { opacity: 0; transform: translateX(16px); background: var(--color-primary-light, #e8f0fe); }
+      to   { opacity: 1; transform: translateX(0);    background: transparent; }
+    }
+    .feedback-item-new { animation: feedback-pop 0.5s ease both; }
+
     @media (max-width: 768px) {
       html, body { overflow: auto; height: auto; }
       .qa-layout { flex-direction: column; height: auto; overflow: visible; }
