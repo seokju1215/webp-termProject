@@ -21,6 +21,7 @@ app.use('/api/webhooks', (req, res, next) => {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, x-webhook-secret, Authorization',
+    'Access-Control-Allow-Private-Network': 'true',
   });
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
