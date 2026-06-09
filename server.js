@@ -36,8 +36,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname, 'public')));
+const root = process.cwd();
+app.use('/uploads', express.static(path.join(root, 'uploads')));
+app.use(express.static(path.join(root, 'public')));
 
 // API 라우터
 app.use('/api/auth', authRouter);
@@ -49,7 +50,7 @@ app.use('/api/webhooks', webhooksRouter);
 
 // SPA 폴백 — /api 이외의 GET 요청은 index.html로
 app.get(/^(?!\/api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(root, 'public', 'index.html'));
 });
 
 app.use(errorHandler);
