@@ -32,6 +32,13 @@ loadKanban();
 loadTeamMembers();
 refreshIcons();
 
+// 5초마다 칸반 자동 갱신 (드롭다운/모달 열려있으면 스킵)
+setInterval(() => {
+  if (!document.querySelector('.dropdown-menu.open') && !document.querySelector('.modal-overlay')) {
+    loadKanban();
+  }
+}, 5000);
+
 // ── Project ─────────────────────────────────────────
 
 async function loadProject() {
@@ -129,6 +136,7 @@ function renderKanban(comments) {
 
     colEl.innerHTML = items.map(c => `
       <div class="kanban-card">
+        ${c.page_url ? `<a class="kanban-card-url" href="${escHtml(c.page_url)}" target="_blank" rel="noopener" title="${escHtml(c.page_url)}">${escHtml(c.page_url)}</a>` : ''}
         ${c.selector ? `<div class="kanban-card-selector">${escHtml(c.selector)}</div>` : ''}
         <div class="kanban-card-content">${escHtml(c.content)}</div>
         <div class="kanban-card-meta">
@@ -150,6 +158,7 @@ function renderKanban(comments) {
               <i data-lucide="more-horizontal" style="width:13px;height:13px;"></i>
             </button>
             <div class="dropdown-menu">
+              <div style="padding:0.2rem 0.75rem;font-size:0.7rem;color:var(--color-text-muted);font-weight:600;">칸반 이동</div>
               <button class="dropdown-item" data-cid="${c.id}" data-status="IN_PROGRESS">
                 <i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 수정 필요
               </button>
@@ -177,8 +186,24 @@ function renderKanban(comments) {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const menu = btn.nextElementSibling;
-        document.querySelectorAll('.dropdown-menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
-        menu.classList.toggle('open');
+        const wasOpen = menu.classList.contains('open');
+        document.querySelectorAll('.dropdown-menu.open').forEach(m => m.classList.remove('open'));
+        if (!wasOpen) {
+          const rect = btn.getBoundingClientRect();
+          menu.style.position = 'fixed';
+          menu.style.zIndex = '9999';
+          menu.style.left = 'auto';
+          menu.style.right = `${window.innerWidth - rect.right}px`;
+          const estimatedHeight = 230;
+          if (rect.bottom + estimatedHeight > window.innerHeight) {
+            menu.style.top = 'auto';
+            menu.style.bottom = `${window.innerHeight - rect.top + 4}px`;
+          } else {
+            menu.style.top = `${rect.bottom + 4}px`;
+            menu.style.bottom = 'auto';
+          }
+          menu.classList.add('open');
+        }
       });
     });
 
