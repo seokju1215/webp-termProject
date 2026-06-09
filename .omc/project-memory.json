@@ -1,0 +1,258 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1780918510170,
+  "projectRoot": "/Users/hongseogju/Desktop/2026_1_uni/웹프로그래밍/webp-termProject",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "express",
+        "version": "4.18.2",
+        "category": "backend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "start": "node server.js",
+      "dev": "nodemon server.js"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "components",
+      "public"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "components": {
+      "path": "components",
+      "purpose": "UI components",
+      "fileCount": 0,
+      "lastAccessed": 1780918510087,
+      "keyFiles": []
+    },
+    "db": {
+      "path": "db",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1780918510093,
+      "keyFiles": [
+        "index.js",
+        "migrate.sql",
+        "schema.sql"
+      ]
+    },
+    "middleware": {
+      "path": "middleware",
+      "purpose": "Middleware",
+      "fileCount": 2,
+      "lastAccessed": 1780918510116,
+      "keyFiles": [
+        "auth.js",
+        "error.js"
+      ]
+    },
+    "plan": {
+      "path": "plan",
+      "purpose": null,
+      "fileCount": 8,
+      "lastAccessed": 1780918510119,
+      "keyFiles": [
+        "agent-log-w2.md",
+        "agent-log-w3.md",
+        "agent-log.md",
+        "architecture.md",
+        "data-model.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 1,
+      "lastAccessed": 1780918510121,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "routes": {
+      "path": "routes",
+      "purpose": "Route handlers",
+      "fileCount": 6,
+      "lastAccessed": 1780918510121,
+      "keyFiles": [
+        "auth.js",
+        "comments.js",
+        "projects.js",
+        "teams.js",
+        "testcases.js"
+      ]
+    },
+    "uploads": {
+      "path": "uploads",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1780918510123,
+      "keyFiles": []
+    },
+    "public/pages": {
+      "path": "public/pages",
+      "purpose": "Page components",
+      "fileCount": 9,
+      "lastAccessed": 1780918510146,
+      "keyFiles": [
+        "401.html",
+        "404.html",
+        "500.html"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "public/js/pages/project-detail.js",
+      "accessCount": 23,
+      "lastAccessed": 1780985204241,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/project-detail.html",
+      "accessCount": 22,
+      "lastAccessed": 1780986069869,
+      "type": "file"
+    },
+    {
+      "path": "public/css/style.css",
+      "accessCount": 10,
+      "lastAccessed": 1780985622981,
+      "type": "file"
+    },
+    {
+      "path": "routes/webhooks.js",
+      "accessCount": 5,
+      "lastAccessed": 1780987072649,
+      "type": "file"
+    },
+    {
+      "path": "public/js/pages/qa.js",
+      "accessCount": 4,
+      "lastAccessed": 1780985462254,
+      "type": "file"
+    },
+    {
+      "path": "server.js",
+      "accessCount": 4,
+      "lastAccessed": 1780987121499,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/signup.html",
+      "accessCount": 3,
+      "lastAccessed": 1780920888988,
+      "type": "file"
+    },
+    {
+      "path": "public/js/pages/mypage.js",
+      "accessCount": 3,
+      "lastAccessed": 1780920943859,
+      "type": "file"
+    },
+    {
+      "path": "db/migrate.sql",
+      "accessCount": 3,
+      "lastAccessed": 1780924837578,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/qa.html",
+      "accessCount": 3,
+      "lastAccessed": 1780984442183,
+      "type": "file"
+    },
+    {
+      "path": "public/js/sidebar.js",
+      "accessCount": 3,
+      "lastAccessed": 1780984883566,
+      "type": "file"
+    },
+    {
+      "path": "routes/auth.js",
+      "accessCount": 2,
+      "lastAccessed": 1780920645913,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/mypage.html",
+      "accessCount": 2,
+      "lastAccessed": 1780920870433,
+      "type": "file"
+    },
+    {
+      "path": "public/js/pages/login.js",
+      "accessCount": 2,
+      "lastAccessed": 1780920973190,
+      "type": "file"
+    },
+    {
+      "path": "public/css/components.css",
+      "accessCount": 2,
+      "lastAccessed": 1780984445514,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/dashboard.html",
+      "accessCount": 2,
+      "lastAccessed": 1780984777608,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 1,
+      "lastAccessed": 1780919952365,
+      "type": "file"
+    },
+    {
+      "path": "public/index.html",
+      "accessCount": 1,
+      "lastAccessed": 1780920352884,
+      "type": "file"
+    },
+    {
+      "path": "public/pages/projects.html",
+      "accessCount": 1,
+      "lastAccessed": 1780984446064,
+      "type": "file"
+    },
+    {
+      "path": "middleware/auth.js",
+      "accessCount": 1,
+      "lastAccessed": 1780985571251,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

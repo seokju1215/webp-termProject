@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — 마이페이지</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <style>
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .profile-info h2 { margin-bottom: 0.25rem; }
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+      margin-bottom: 0.875rem;
+    }
+    .bookmark-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .bookmark-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--color-text);
+      transition: background var(--transition);
+    }
+    .bookmark-item:hover { background: var(--color-surface-2); text-decoration: none; }
+    .team-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .team-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+    }
+  </style>
+</head>
+<body>
+  <script>(function(){const t=localStorage.getItem('theme')||'';document.documentElement.setAttribute('data-theme',t);})()</script>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/pages/dashboard.html" class="navbar-brand">QAFlow</a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" id="theme-btn" aria-label="다크모드 토글">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-nav">
+        <div class="sidebar-section-label">내 팀</div>
+        <div id="sidebar-teams"></div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="/pages/mypage.html" class="sidebar-item active">
+          <i data-lucide="user" style="width:15px;height:15px;"></i>
+          <span id="sidebar-user-name">마이페이지</span>
+        </a>
+        <button class="sidebar-item" id="sidebar-logout-btn">
+          <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+          <span>로그아웃</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-content" style="max-width:720px;">
+      <!-- Profile -->
+      <div class="profile-card">
+        <div class="profile-avatar" id="profile-avatar">?</div>
+        <div class="profile-info">
+          <h2 id="profile-name">로딩 중...</h2>
+          <p class="text-muted" id="profile-email"></p>
+        </div>
+      </div>
+
+      <!-- Edit profile -->
+      <div class="card mb-2">
+        <h3 style="margin-bottom:1rem;">프로필 수정</h3>
+        <div class="form-group">
+          <label class="form-label">이름</label>
+          <input class="form-input" id="edit-name" placeholder="이름" />
+          <span class="form-error hidden" id="edit-name-err"></span>
+        </div>
+        <div style="margin-top:1rem;">
+          <button class="btn btn-primary" id="save-profile-btn">
+            <i data-lucide="save" style="width:15px;height:15px;"></i>
+            저장
+          </button>
+        </div>
+      </div>
+
+      <!-- Bookmarks -->
+      <div class="mb-2">
+        <div class="section-title">북마크한 프로젝트</div>
+        <div id="bookmark-list" class="bookmark-list"></div>
+        <div id="bookmark-empty" class="empty-state hidden" style="padding:1.5rem;">
+          <p class="empty-desc">북마크한 프로젝트가 없습니다.</p>
+        </div>
+      </div>
+
+      <!-- Teams -->
+      <div class="mb-2">
+        <div class="section-title">소속 팀</div>
+        <div id="teams-list" class="team-list"></div>
+        <div id="teams-empty" class="empty-state hidden" style="padding:1.5rem;">
+          <p class="empty-desc">소속된 팀이 없습니다.</p>
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div>
+        <div class="section-title">최근 활동</div>
+        <div id="activity-list"></div>
+        <div id="activity-empty" class="empty-state hidden" style="padding:1.5rem;">
+          <p class="empty-desc">최근 활동이 없습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="/js/pages/mypage.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — 프로젝트</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+  <script>(function(){const t=localStorage.getItem('theme')||'';document.documentElement.setAttribute('data-theme',t);})()</script>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/pages/dashboard.html" class="navbar-brand">QAFlow</a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" id="theme-btn" aria-label="다크모드 토글">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-nav">
+        <div class="sidebar-section-label">내 팀</div>
+        <div id="sidebar-teams"></div>
+        <a href="/pages/dashboard.html" class="sidebar-item" style="color:var(--color-text-muted);font-size:0.8125rem;">
+          <i data-lucide="plus" style="width:15px;height:15px;"></i>
+          <span>팀 추가</span>
+        </a>
+      </div>
+      <div class="sidebar-footer">
+        <a href="/pages/mypage.html" class="sidebar-item">
+          <i data-lucide="user" style="width:15px;height:15px;"></i>
+          <span id="sidebar-user-name">마이페이지</span>
+        </a>
+        <button class="sidebar-item" id="sidebar-logout-btn">
+          <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+          <span>로그아웃</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+        <h1 id="page-title">프로젝트</h1>
+        <button class="btn btn-primary" id="create-project-btn">
+          <i data-lucide="plus" style="width:16px;height:16px;"></i>
+          프로젝트 추가
+        </button>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-input-wrap">
+          <i data-lucide="search" class="search-icon" style="width:15px;height:15px;"></i>
+          <input class="form-input" id="search-input" placeholder="프로젝트 검색..." />
+        </div>
+        <select class="filter-select" id="sort-select">
+          <option value="created_at:desc">최신순</option>
+          <option value="created_at:asc">오래된 순</option>
+          <option value="name:asc">이름순</option>
+        </select>
+      </div>
+
+      <div id="projects-grid" class="project-grid"></div>
+
+      <div id="empty-projects" class="empty-state hidden">
+        <div class="empty-icon" style="margin-bottom:0.75rem;">
+          <i data-lucide="folder-open" style="width:48px;height:48px;color:var(--color-text-muted);"></i>
+        </div>
+        <p class="empty-title">프로젝트가 없습니다</p>
+        <p class="empty-desc">첫 번째 프로젝트를 추가해보세요.</p>
+      </div>
+
+      <div id="pagination" class="pagination"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="/js/pages/projects.js"></script>
+</body>
+</html>

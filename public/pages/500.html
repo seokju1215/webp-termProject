@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — 서버 오류</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .error-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      gap: 1rem;
+    }
+    .error-code { font-size: 6rem; font-weight: 800; color: var(--color-danger); line-height: 1; }
+    .error-title { font-size: 1.5rem; font-weight: 600; }
+    .error-desc { color: var(--color-text-muted); max-width: 360px; }
+  </style>
+</head>
+<body>
+  <main class="error-page">
+    <div class="error-code">500</div>
+    <h1 class="error-title">서버 오류가 발생했습니다</h1>
+    <p class="error-desc">잠시 후 다시 시도해주세요. 문제가 계속되면 관리자에게 문의하세요.</p>
+    <a href="/" class="btn btn-primary">홈으로 돌아가기</a>
+  </main>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    const t = localStorage.getItem('theme') || '';
+    document.documentElement.setAttribute('data-theme', t);
+    lucide.createIcons();
+  </script>
+</body>
+</html>

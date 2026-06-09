@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — 대시보드</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+</head>
+<body>
+  <script>(function(){const t=localStorage.getItem('theme')||'';document.documentElement.setAttribute('data-theme',t);})()</script>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="/pages/dashboard.html" class="navbar-brand">QAFlow</a>
+      <div class="navbar-actions">
+        <button class="theme-toggle" id="theme-btn" aria-label="다크모드 토글">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-nav">
+        <div class="sidebar-section-label">내 팀</div>
+        <div id="sidebar-teams"></div>
+        <button class="sidebar-item" id="create-team-sidebar-btn">
+          <i data-lucide="plus" style="width:15px;height:15px;"></i>
+          <span>팀 만들기</span>
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <a href="/pages/mypage.html" class="sidebar-item">
+          <i data-lucide="user" style="width:15px;height:15px;"></i>
+          <span id="sidebar-user-name">마이페이지</span>
+        </a>
+        <button class="sidebar-item" id="sidebar-logout-btn">
+          <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+          <span>로그아웃</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="app-content">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem;">
+        <h1>내 팀</h1>
+        <button class="btn btn-primary" id="create-team-btn">
+          <i data-lucide="plus" style="width:16px;height:16px;"></i>
+          팀 만들기
+        </button>
+      </div>
+
+      <div id="teams-grid" class="project-grid"></div>
+
+      <div id="empty-teams" class="empty-state hidden">
+        <div class="empty-icon" style="margin-bottom:0.75rem;">
+          <i data-lucide="users" style="width:48px;height:48px;color:var(--color-text-muted);"></i>
+        </div>
+        <p class="empty-title">소속된 팀이 없습니다</p>
+        <p class="empty-desc">팀을 만들어 프로젝트를 관리해보세요.</p>
+        <button class="btn btn-primary mt-2" id="create-team-empty-btn">
+          <i data-lucide="plus" style="width:16px;height:16px;"></i>
+          팀 만들기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="/js/pages/dashboard.js"></script>
+</body>
+</html>

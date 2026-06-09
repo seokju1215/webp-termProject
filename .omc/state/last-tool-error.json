@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"\\\\\\n  psql \\\"$DATABASE_URL\\\" -c \\\"ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE;\\\" 2>&1\",\"description\":\"Add google_id column to users table\"}",
+  "error": "Exit code 2\npsql: 오류: \"/tmp/.s.PGSQL.5432\" 소켓으로 서버 접속 할 수 없음: FATAL:  database \"hongseogju\" does not exist",
+  "timestamp": "2026-06-08T12:13:13.967Z",
+  "retry_count": 1
+}

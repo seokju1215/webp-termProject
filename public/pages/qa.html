@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — QA 화면</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <style>
+    html, body { height: 100%; overflow: hidden; }
+
+    .qa-layout {
+      display: flex;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+    }
+
+    /* Left: iframe */
+    .qa-iframe-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .qa-iframe-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--color-surface-2);
+      border-bottom: 1px solid var(--color-border);
+      flex-shrink: 0;
+    }
+    .qa-url-display {
+      flex: 1;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #qa-iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #fff;
+    }
+    .iframe-blocked {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: var(--color-surface-2);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* Right: Feedback panel */
+    .qa-side-panel {
+      width: 360px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--color-border);
+      background: var(--color-surface);
+      overflow: hidden;
+    }
+
+    .qa-panel-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qa-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--color-border);
+    }
+    .qa-tab {
+      flex: 1;
+      padding: 0.625rem;
+      border: none;
+      background: transparent;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      position: relative;
+      bottom: -2px;
+      border-bottom: 2px solid transparent;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .qa-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+    .qa-tab-content { flex: 1; overflow-y: auto; padding: 0.75rem; display: none; }
+    .qa-tab-content.active { display: block; }
+
+    .feedback-item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+    .feedback-selector {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      background: var(--color-surface-2);
+      border-radius: var(--radius-sm);
+      padding: 0.15rem 0.375rem;
+      font-family: monospace;
+      margin-bottom: 0.375rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .feedback-content { margin-bottom: 0.5rem; line-height: 1.5; }
+    .feedback-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+    .setup-section { padding: 1rem; }
+    .setup-step {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .setup-step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+    .setup-step-body { flex: 1; }
+    .setup-step-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.375rem; }
+    .setup-step-desc { font-size: 0.8125rem; color: var(--color-text-muted); line-height: 1.5; }
+    .code-block {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      word-break: break-all;
+      position: relative;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.375rem;
+      right: 0.375rem;
+      padding: 0.2rem 0.4rem;
+      font-size: 0.75rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .copy-btn:hover { background: var(--color-primary); color: #fff; }
+
+    @media (max-width: 768px) {
+      html, body { overflow: auto; height: auto; }
+      .qa-layout { flex-direction: column; height: auto; overflow: visible; }
+      .qa-iframe-panel { min-height: 50vh; }
+      .qa-side-panel { width: 100%; border-left: none; border-top: 1px solid var(--color-border); min-height: 60vh; }
+    }
+  </style>
+</head>
+<body>
+  <script>(function(){const t=localStorage.getItem('theme')||'';document.documentElement.setAttribute('data-theme',t);})()</script>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div style="display:flex;align-items:center;gap:0.5rem;">
+        <a id="back-link" href="#" class="btn btn-ghost btn-sm">
+          <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+        </a>
+        <span id="project-name-nav" style="font-size:0.9rem;font-weight:600;">QA 화면</span>
+      </div>
+      <div class="navbar-actions">
+        <a id="open-tab-btn" href="#" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">
+          <i data-lucide="external-link" style="width:15px;height:15px;"></i>
+          새 탭으로
+        </a>
+        <button class="btn btn-ghost btn-sm" id="refresh-btn" title="피드백 새로고침">
+          <i data-lucide="refresh-cw" style="width:15px;height:15px;"></i>
+        </button>
+        <button class="theme-toggle" id="theme-btn" aria-label="다크모드 토글">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+        <button class="btn btn-ghost btn-sm" id="logout-btn">로그아웃</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="qa-layout">
+    <!-- Left: iframe -->
+    <div class="qa-iframe-panel">
+      <div class="qa-iframe-bar">
+        <i data-lucide="globe" style="width:14px;height:14px;color:var(--color-text-muted);flex-shrink:0;"></i>
+        <span class="qa-url-display" id="qa-url-display">로딩 중...</span>
+      </div>
+      <div id="iframe-container" style="flex:1;display:flex;flex-direction:column;">
+        <iframe id="qa-iframe" title="QA 대상 사이트" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+
+    <!-- Right: side panel -->
+    <div class="qa-side-panel">
+      <div class="qa-tabs">
+        <button class="qa-tab active" data-tab="feedback">
+          <i data-lucide="message-square" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i>
+          피드백
+          <span id="feedback-count" style="margin-left:4px;background:var(--color-border);border-radius:10px;padding:0 6px;font-size:0.75rem;">0</span>
+        </button>
+        <button class="qa-tab" data-tab="setup">
+          <i data-lucide="settings" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i>
+          Agentation 설정
+        </button>
+      </div>
+
+      <!-- Feedback list -->
+      <div class="qa-tab-content active" id="tab-feedback">
+        <div style="display:flex;justify-content:flex-end;padding:0.375rem 0.75rem;border-bottom:1px solid var(--color-border);">
+          <button class="btn btn-ghost btn-sm" id="export-feedback-btn" title="CSV 내보내기">
+            <i data-lucide="download" style="width:13px;height:13px;"></i>
+            내보내기
+          </button>
+        </div>
+        <div id="feedback-list"></div>
+        <div id="feedback-empty" class="empty-state hidden" style="padding:2rem 1rem;">
+          <p class="empty-title">피드백 없음</p>
+          <p class="empty-desc">Agentation으로 어노테이션을 남기면 여기에 표시됩니다.</p>
+        </div>
+      </div>
+
+      <!-- Setup guide -->
+      <div class="qa-tab-content" id="tab-setup">
+        <div class="setup-section">
+          <p class="text-muted text-sm mb-2" style="line-height:1.6;">
+            Agentation을 QA 대상 사이트에 설치하고, 아래 Webhook URL을 연결하세요.
+          </p>
+
+          <div class="setup-step">
+            <div class="setup-step-num">1</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">npm 패키지 설치</div>
+              <div class="setup-step-desc">QA 대상 프로젝트에 Agentation 패키지를 설치하세요.</div>
+              <div class="code-block">
+                npm install agentation
+                <button class="copy-btn" data-copy="npm install agentation">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">2</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">스크립트 초기화</div>
+              <div class="setup-step-desc">대상 사이트의 진입 파일에 아래 코드를 추가하세요.</div>
+              <div class="code-block" id="init-code-block">
+                <span id="init-code">로딩 중...</span>
+                <button class="copy-btn" id="copy-init-btn">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">3</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Webhook URL 설정</div>
+              <div class="setup-step-desc">Agentation 대시보드에서 아래 URL을 Webhook으로 등록하세요.</div>
+              <div class="code-block">
+                <span id="webhook-url">로딩 중...</span>
+                <button class="copy-btn" id="copy-webhook-btn">복사</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setup-step">
+            <div class="setup-step-num">4</div>
+            <div class="setup-step-body">
+              <div class="setup-step-title">Webhook Secret</div>
+              <div class="setup-step-desc">Agentation Webhook 헤더 <code>x-webhook-secret</code>에 아래 값을 설정하세요.</div>
+              <div class="code-block" id="secret-block">
+                <span id="webhook-secret">****</span>
+                <button class="copy-btn" id="copy-secret-btn">복사</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="/js/pages/qa.js"></script>
+</body>
+</html>

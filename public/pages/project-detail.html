@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QAFlow — 프로젝트 상세</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <style>
+    html, body { overflow: hidden; height: 100%; }
+    .navbar-inner { max-width: none; }
+
+    .project-bar {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.625rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .project-bar-left { display: flex; flex-direction: column; min-width: 0; }
+    .project-bar-name { font-weight: 600; font-size: 0.9375rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .project-bar-url { font-size: 0.8125rem; color: var(--color-text-muted); }
+    .project-bar-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+
+    .kanban-panel {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 56px - 54px);
+      overflow: hidden;
+      padding: 1rem 1.5rem;
+      background: var(--color-bg);
+    }
+
+    .kanban-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.875rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      html, body { overflow: auto; height: auto; }
+      .kanban-panel { height: auto; min-height: 80vh; overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <script>(function(){const t=localStorage.getItem('theme')||'';document.documentElement.setAttribute('data-theme',t);})()</script>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div style="display:flex;align-items:center;gap:0.5rem;min-width:0;overflow:hidden;">
+        <a id="back-link" href="/pages/dashboard.html" class="btn btn-ghost btn-sm" style="flex-shrink:0;">
+          <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+        </a>
+        <span id="breadcrumb-team" style="color:var(--color-text-muted);font-size:0.875rem;flex-shrink:0;"></span>
+        <span style="color:var(--color-text-muted);flex-shrink:0;">/</span>
+        <span id="breadcrumb-project" style="font-size:0.875rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">로딩 중...</span>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-sm" id="bookmark-btn" title="북마크">
+          <i data-lucide="bookmark" style="width:16px;height:16px;"></i>
+        </button>
+        <a id="qa-link" href="#" class="btn btn-primary btn-sm">
+          <i data-lucide="play" style="width:14px;height:14px;"></i>
+          QA 화면
+        </a>
+        <button class="theme-toggle" id="theme-btn" aria-label="다크모드 토글">
+          <i data-lucide="moon" style="width:18px;height:18px;"></i>
+        </button>
+        <button class="btn btn-ghost btn-sm" id="logout-btn">로그아웃</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Project bar -->
+  <div class="project-bar">
+    <div class="project-bar-left">
+      <div class="project-bar-name" id="project-name">로딩 중...</div>
+      <a id="project-url" href="#" target="_blank" rel="noopener" class="project-bar-url"></a>
+    </div>
+    <div class="project-bar-actions">
+      <span id="project-image-thumb" style="display:none;">
+        <img id="project-thumb-img" style="width:48px;height:36px;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--color-border);" />
+      </span>
+    </div>
+  </div>
+
+  <!-- Kanban -->
+  <div class="kanban-panel">
+    <div class="kanban-toolbar">
+      <h2 style="margin:0;font-size:1rem;font-weight:600;">피드백 칸반</h2>
+      <select class="filter-select" id="kanban-assignee-filter" style="font-size:0.8125rem;">
+        <option value="">전체 담당자</option>
+      </select>
+    </div>
+
+    <div class="kanban-board" id="kanban-board" style="flex:1;overflow-x:auto;">
+      <div class="kanban-col col-progress">
+        <div class="kanban-col-header">
+          <i data-lucide="alert-circle" style="width:14px;height:14px;color:var(--color-warning);"></i>
+          수정 필요
+          <span class="kanban-col-count" id="count-IN_PROGRESS">0</span>
+        </div>
+        <div class="kanban-col-body" id="col-IN_PROGRESS"></div>
+      </div>
+
+      <div class="kanban-col col-done">
+        <div class="kanban-col-header">
+          <i data-lucide="check-circle" style="width:14px;height:14px;color:var(--color-success);"></i>
+          수정 완료
+          <span class="kanban-col-count" id="count-DONE">0</span>
+        </div>
+        <div class="kanban-col-body" id="col-DONE"></div>
+      </div>
+
+      <div class="kanban-col col-failed">
+        <div class="kanban-col-header">
+          <i data-lucide="x-circle" style="width:14px;height:14px;color:var(--color-danger);"></i>
+          반려
+          <span class="kanban-col-count" id="count-FAILED">0</span>
+        </div>
+        <div class="kanban-col-body" id="col-FAILED"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="/js/pages/project-detail.js"></script>
+</body>
+</html>
