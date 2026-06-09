@@ -22,11 +22,6 @@ router.options('/agentation', (req, res) => {
 router.post('/agentation', async (req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
   try {
-    const secret = req.headers['x-webhook-secret'] || req.query.secret;
-    if (secret !== process.env.WEBHOOK_SECRET) {
-      return res.status(401).json({ error: 'UNAUTHORIZED', message: '잘못된 webhook secret입니다.' });
-    }
-
     const { projectId } = req.query;
     if (!projectId) {
       return res.status(400).json({ error: 'VALIDATION', message: 'projectId가 필요합니다.' });
