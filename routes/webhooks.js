@@ -32,42 +32,31 @@ router.post('/agentation', async (req, res, next) => {
       return res.status(404).json({ error: 'NOT_FOUND', message: '프로젝트를 찾을 수 없습니다.' });
     }
 
-    const {
-      content,
-      selector,
-      bounding_rect,
-      tag_name,
-      text_content,
-      page_url,
-      user,
-    } = req.body;
+    // Agentation 페이로드: { event, timestamp, url, annotation: { id, comment, element, elementPath } }
+    // submit 이벤트: { event: 'submit', output, annotations: [...] }
+    const body = req.body;
+    const eventType = body.event;
+
+    // submit 이벤트는 무시 (annotation.add / annotation.update 만 처리)
+    if (eventType === 'annotations.clear' || eventType === 'annotation.delete') {
+      return res.status(200).json({ data: null });
+    }
+
+    const content = body.annotation?.comment || body.output || body.content;
+    const selector = body.annotation?.elementPath || body.selector || null;
+    const tag_name = body.annotation?.element || body.tag_name || null;
+    const page_url = body.url || body.page_url || null;
 
     if (!content) {
       return res.status(400).json({ error: 'VALIDATION', message: 'content가 필요합니다.' });
     }
 
-    // Agentation 유저 이메일로 우리 DB 유저 매핑 시도
-    let createdById = null;
-    if (user?.email) {
-      const userRow = await query('SELECT id FROM users WHERE email = $1', [user.email]);
-      if (userRow.rows.length) createdById = userRow.rows[0].id;
-    }
-
     const { rows } = await query(
       `INSERT INTO comments
-         (project_id, created_by_id, content, selector, bounding_rect, tag_name, text_content, page_url)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         (project_id, created_by_id, content, selector, tag_name, page_url)
+       VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [
-        projectId,
-        createdById,
-        content,
-        selector || null,
-        bounding_rect ? JSON.stringify(bounding_rect) : null,
-        tag_name || null,
-        text_content || null,
-        page_url || null,
-      ]
+      [projectId, null, content, selector, tag_name, page_url]
     );
 
     res.status(201).json({ data: rows[0] });
