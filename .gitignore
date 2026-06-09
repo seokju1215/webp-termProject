@@ -40,3 +40,6 @@ next-env.d.ts
 
 # pnpm
 pnpm-debug.log*
+
+# claude / omc internals
+.omc/
